@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY EXPENSES</title>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>Учет расходов</h1>
+    <div class="container">
+      <div class="expensInput">
+        <div class="moneyInput rub">
+          <input
+            class="js-input__expens moneyInput__input"
+            type="number"
+            placeholder="Введите сумму"
+            min="1"
+          />
+        </div>
+      </div>
+
+      <button class="js-input__btn input__btn">Добавить</button>
+
+      <div class="stats">
+        <div class="stats__limit">
+          <span class="information-limit label"> Лимит:</span>
+          <span class="js-limit limit rub"></span>
+        </div>
+        <div class="stats__sum">
+          <span class="information-sum label">Сумма трат: </span>
+          <span class="js-sum sum ru"></span>
+        </div>
+        <div class="stats__status">
+          <span class="information-status label"> Статус:</span>
+          <span class="js-status status"></span>
+        </div>
+        <button class="clear__btn" id="clearBtn">Сбросить расходы</button>
+      </div>
+      <div class="history">
+        <div class="history label">История</div>
+        <div class="js-history"></div>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
