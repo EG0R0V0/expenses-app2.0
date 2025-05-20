@@ -10,102 +10,93 @@ const historyNode = document.querySelector('.js-history');
 const sumNode = document.querySelector('.js-sum');
 const limitNode = document.querySelector('.js-limit');
 const statusNode = document.querySelector('.js-status');
-const clearBtnNode = document.getElementById("clearBtn");
+const clearBtnNode = document.getElementById('clearBtn');
+const categoryNode = document.getElementById('categorySelect')
 
 let expenses = [];
+limitNode.innerText = LIMIT;
+statusNode.innerText = STATUS_IN_LIMIT;
 
-init(expenses);
-
-pushExpenseNode.addEventListener('click', function () {
-    const expense = getExpenseFromUser();
-
-    if (!expense) {
-        return;
-    }
-
-    trackExpense(expense);
-
-    render(expenses)
-})
-
-function trackExpense(expense) {
-    expenses.push(expense);     // добавляем значение в массив
-}
-
-
-function render(expenses) {
-    const sum = calculateExpenses(expenses);
-
-    renderHistory(expenses);
-    renderSum(sum);
-    renderStatus(sum);
-}
-
-function init(expenses) {
-    limitNode.innerText = LIMIT;
-    statusNode.innerText = STATUS_IN_LIMIT;
-    sumNode.innerText = calculateExpenses(expenses);
-}
-
-
-function calculateExpenses(expenses) {
-    //производится подсчет суммы трат
+function getTotal() {
     let sum = 0;
-    expenses.forEach(element => {
-        sum += element;
-    });
-
+    expenses.forEach(function (expense) {
+        sum += expense.amont;
+    })
     return sum;
 }
 
-function getExpenseFromUser() {
-    if (inputExpenseNode.value === '') {    // проверяем наличие значения в поле вводаили !inputExpenseNode.value
-        return null;
-    }
+function renderStatus() {
+    const total = getTotal(expenses);
+    sumNode.innerText = total;
 
-    const expense = parseInt(inputExpenseNode.value)     // делаем строку числом
-
-    clearInput()
-
-    return expense;
-}
-
-
-function clearInput() {
-    inputExpenseNode.value = '';     // после нажатия обнуляем поля ввода
-}
-
-function renderHistory(expenses) {
-
-    let expensesListHTML = '';
-
-    expenses.forEach(element => {
-        const elementHTML = `<li class = 'historyElement'>${element} ${CURRENCY}</li>`;
-        expensesListHTML += elementHTML;
-    });
-
-    historyNode.innerHTML = `<ol class='expenesHistoryList'>${expensesListHTML}</ol>`;
-}
-
-function renderSum(sum) {
-    sumNode.innerText = `${sum} ${CURRENCY}`;
-}
-
-function renderStatus(sum) {
-    // проверяем выход за предел лимита
-    if (sum <= LIMIT) {
+    if (total <= LIMIT) {
         statusNode.innerText = STATUS_IN_LIMIT;
     } else {
-        const out_of_limit = sum - LIMIT;
-        statusNode.innerText = `${STATUS_OUT_OF_LIMIT} (-${out_of_limit} ${CURRENCY})`;
+        statusNode.innerText = (`${STATUS_OUT_OF_LIMIT} (${LIMIT - total} ${CURRENCY})`);
         statusNode.classList.add(STATUS_OUT_OF_LIMIT_CLASSNAME);
     }
 }
 
+function renderHistory() {
+    historyNode.innerHTML = "";
+
+    expenses.forEach(function (expense) {
+        //const historyItem = document.createElement("li");
+        const historyItem = document.createElement("li");
+        historyItem.className = "historyElement rub";
+        historyItem.innerText = `${expense.category} - ${expense.amont}`;
+        historyNode.appendChild(historyItem);
+    });
+};
+
+function render() {
+    renderStatus(expenses);
+    renderHistory(expenses);
+}
+
+function addBtnHandler() {
+    const currentAmont = getExpensesFromUser();
+
+    if (!currentAmont) {
+        return
+    }
+
+    const currentCategory = getCategoryFromUser();
+    if (currentCategory === "Категория") {
+        return
+    }
+
+    const newExpense = { amont: currentAmont, category: currentCategory };
+
+    expenses.push(newExpense);
+
+    render();
+
+    clearInput();
+
+    console.log(expenses);
+}
+
+
+
+function getExpensesFromUser() {
+    return parseInt(inputExpenseNode.value);
+}
+
+function getCategoryFromUser() {
+    return categoryNode.value;
+}
+
+function clearInput() {
+    inputExpenseNode.value = '';
+    categoryNode.value = 'Категория';
+};
+
 const clearBtnHandler = () => {
     expenses = [];
-    render(expenses);
+    render();
     statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
 };
 
 clearBtnNode.addEventListener("click", clearBtnHandler);
+pushExpenseNode.addEventListener("click", addBtnHandler)

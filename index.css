@@ -3,7 +3,8 @@ h1,
 p,
 input,
 span,
-button {
+button,
+select {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   font-weight: 400;
@@ -62,6 +63,15 @@ h1 {
   display: none;
 }
 
+.categorySelect {
+  height: 58px;
+  width: 100%;
+  margin-top: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px 17px 9px 22px;
+}
+
 .input__btn {
   width: 370px;
   height: 58px;
@@ -84,11 +94,11 @@ h1 {
 }
 
 .historyElement {
+  list-style: decimal;
   color: #0094ff;
 }
 
 .expenesHistoryList {
-  list-style: decimal;
 }
 
 .stats__sum {

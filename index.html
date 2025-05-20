@@ -19,6 +19,15 @@
             min="1"
           />
         </div>
+        <select id="categorySelect" class="categorySelect">
+          <option hidden disabled selected value="Категория">Категория</option>
+          <option value="Квартира">Квартира</option>
+          <option value="Авто">Авто</option>
+          <option value="Продукты">Продукты</option>
+          <option value="Кафе">Кафе и рестораны</option>
+          <option value="Подарки">Подарки</option>
+          <option value="Инвестиции">Инвестиции</option>
+        </select>
       </div>
 
       <button class="js-input__btn input__btn">Добавить</button>
@@ -30,7 +39,7 @@
         </div>
         <div class="stats__sum">
           <span class="information-sum label">Сумма трат: </span>
-          <span class="js-sum sum ru"></span>
+          <span class="js-sum sum rub">0</span>
         </div>
         <div class="stats__status">
           <span class="information-status label"> Статус:</span>
@@ -38,6 +47,7 @@
         </div>
         <button class="clear__btn" id="clearBtn">Сбросить расходы</button>
       </div>
+
       <div class="history">
         <div class="history label">История</div>
         <div class="js-history"></div>
