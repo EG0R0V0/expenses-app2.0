@@ -1,4 +1,4 @@
-const LIMIT = 10000;
+let LIMIT = 10000;
 const STATUS_IN_LIMIT = 'все хорошо!';
 const STATUS_OUT_OF_LIMIT = 'все плохо!';
 const STATUS_OUT_OF_LIMIT_CLASSNAME = 'status_red';
@@ -11,7 +11,8 @@ const sumNode = document.querySelector('.js-sum');
 const limitNode = document.querySelector('.js-limit');
 const statusNode = document.querySelector('.js-status');
 const clearBtnNode = document.getElementById('clearBtn');
-const categoryNode = document.getElementById('categorySelect')
+const categoryNode = document.getElementById('categorySelect');
+const changeLimitNode = document.getElementById('js-change_limit');
 
 let expenses = [];
 limitNode.innerText = LIMIT;
@@ -31,6 +32,7 @@ function renderStatus() {
 
     if (total <= LIMIT) {
         statusNode.innerText = STATUS_IN_LIMIT;
+        statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
     } else {
         statusNode.innerText = (`${STATUS_OUT_OF_LIMIT} (${LIMIT - total} ${CURRENCY})`);
         statusNode.classList.add(STATUS_OUT_OF_LIMIT_CLASSNAME);
@@ -98,5 +100,24 @@ const clearBtnHandler = () => {
     statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
 };
 
+const changeLimitHandler = () => {
+    const newLimit = prompt("Новый лимит");
+
+    const newLimitValue = parseInt(newLimit);
+
+    if (!newLimitValue) {
+        return;
+    }
+
+
+    limitNode.innerText = newLimitValue;
+
+    LIMIT = newLimitValue;
+
+    render();
+};
+
+
+changeLimitNode.addEventListener("click", changeLimitHandler);
 clearBtnNode.addEventListener("click", clearBtnHandler);
-pushExpenseNode.addEventListener("click", addBtnHandler)
+pushExpenseNode.addEventListener("click", addBtnHandler);
