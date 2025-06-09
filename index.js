@@ -1,5 +1,8 @@
 let limit = 10000;
-const GLOBAL_LABEL_LIMIT = "limit";
+
+
+const STORAGE_LABEL_LIMIT = "limit";
+const STORAGE_LABEL_EXPENSES = "expenses";
 const STATUS_IN_LIMIT = 'все хорошо!';
 const STATUS_OUT_OF_LIMIT = 'все плохо!';
 const STATUS_OUT_OF_LIMIT_CLASSNAME = 'status_red';
@@ -15,19 +18,32 @@ const clearBtnNode = document.getElementById('clearBtn');
 const categoryNode = document.getElementById('categorySelect');
 const changeLimitNode = document.getElementById('js-change_limit');
 
-let expenses = [];
+
 statusNode.innerText = STATUS_IN_LIMIT;
 limitNode.innerText = limit;
 
 
+
+
+
 function initLimit() {
-    const limitFromStorage = parseInt(localStorage.getItem(GLOBAL_LABEL_LIMIT));
+    const limitFromStorage = parseInt(localStorage.getItem(STORAGE_LABEL_LIMIT));
     if (!limitFromStorage) {
         return;
     }
     limitNode.innerText = limitFromStorage;
+    let limit = parseInt(limitNode.innerText);
 }
+
 initLimit();
+
+const expensesFromStorageString = localStorage.getItem(STORAGE_LABEL_EXPENSES);
+const expensesFromStorage = JSON.parse(expensesFromStorageString);
+let expenses = [];
+if (Array.isArray(expensesFromStorage)) {
+    expenses = expensesFromStorage;
+}
+render();
 
 function getTotal() {
     let sum = 0;
@@ -85,14 +101,19 @@ function addBtnHandler() {
 
     expenses.push(newExpense);
 
+    saveExpensesToGlabal();
+
     render();
 
     clearInput();
-
-    console.log(expenses);
 }
 
+function saveExpensesToGlabal() {
+    const expensesString = JSON.stringify(expenses);
+    localStorage.setItem(STORAGE_LABEL_EXPENSES, expensesString);
+    console.log(expensesString);
 
+}
 
 function getExpensesFromUser() {
     return parseInt(inputExpenseNode.value);
@@ -109,6 +130,8 @@ function clearInput() {
 
 const clearBtnHandler = () => {
     expenses = [];
+    const expensesClear = JSON.stringify(expenses);
+    localStorage.setItem(STORAGE_LABEL_EXPENSES, expensesClear);
     render();
     statusNode.classList.remove(STATUS_OUT_OF_LIMIT_CLASSNAME);
 };
